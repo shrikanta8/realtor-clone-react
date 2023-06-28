@@ -16,7 +16,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
-    email: auth.currentUser.email
+    email: auth.currentUser.email,
   })
   const {name, email} = formData
 
@@ -27,24 +27,24 @@ export default function Profile() {
   function onChange(e){
     setFormData( (prevState) => ({
       ...prevState,
-      [e.target.id]: e.target.value 
+      [e.target.id]: e.target.value, 
     }))
   }
 
   async function onSubmit(){
     try {
-      //is name changed or not
+      // is name changed or not
       if(auth.currentUser.displayName !== name){
         
         //update display name in authentication
         await updateProfile(auth.currentUser, {
-          displayName: name
+          displayName: name,
         })
 
         //update name in firestore
         const docRef = doc(db, "users", auth.currentUser.uid)
         await updateDoc(docRef,{
-          name
+          name,
           // same as name: name
         })
       }
@@ -134,7 +134,7 @@ export default function Profile() {
         {!loading && listings.length > 0 && (
           <>
             <h2 className="text-2xl text-center font-semibold mb-6 ">My Listings</h2>
-            <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl-grid-cols-5 mt-6 mb-6">
+            <ul className="sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               {listings.map((listing) => (
                 <ListingItem
                  key={listing.id} id={listing.id} listing={listing.data} 
