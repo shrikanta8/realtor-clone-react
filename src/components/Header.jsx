@@ -1,5 +1,5 @@
-import { useLocation, useNavigate } from 'react-router'
-import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 export default function Header() {
@@ -20,10 +20,12 @@ export default function Header() {
     }, [auth])
     
     function pathMatchRoute(route){
-        return route === location.pathname
+        if (route === location.pathname) {
+            return true;
+        }
     }
     return (
-        <div className='bg-white border-b sm sticky top-0 z-40'>
+        <div className='bg-white border-b shadow-sm sticky top-0 z-40'>
             <header className='flex justify-between items-center px-3 max-w-6xl mx-auto'>
                 <div>
                     <img src="https://static.rdc.moveaws.com/images/logos/rdc-logo-default.svg"

@@ -24,7 +24,7 @@ export default function CreateListing() {
         furnished:false,
         address:"",
         description: "",
-        offer: true,
+        offer: false,
         regularPrice: 0,
         discountedPrice: 0,
         latitude:0,
@@ -86,7 +86,7 @@ export default function CreateListing() {
     async function onSubmit(e){
         e.preventDefault()
         setLoading(true)
-        if(offer && +discountedPrice >= +regularPrice){
+        if( +discountedPrice >= +regularPrice){
             setLoading(false)
             toast.error("Discounted price needs to be less than regular price")
             return

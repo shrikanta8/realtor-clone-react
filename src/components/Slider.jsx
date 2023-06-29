@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {collection, getDocs, limit, orderBy, query} from "firebase/firestore"
 import {db} from "../firebase"
 import Spinner from "../components/Spinner"
+import {Swiper, SwiperSlide} from "swiper/react"
+import SwiperCore, {
+  EffectFade,
+  Autoplay,
+  Navigation,
+  Pagination,
+} from "swiper";
+import "swiper/css/bundle"
+import { useNavigate } from 'react-router-dom'
 
 export default function Slider() {
   const [listings, setListings] = useState(null)
   const [loading, setLoading] = useState(true)
+  SwiperCore.use([Autoplay, Navigation, Pagination]);
+  const navigate = useNavigate()
   useEffect(() => {
     async function fetchListings(){
       const listingsRef = collection(db,"listings")
@@ -35,9 +46,26 @@ export default function Slider() {
   return (
     listings && (
     <>
-      {listings.map((listing) => (
-        <h1 key={listing.id}>{listing.data.imgUrls[0]}</h1>
-      ))}
+      <Swiper 
+        slidesPerView={1}
+        navigation
+        pagination={{ type: "progressbar" }}
+        effect="fade"
+        modules={[EffectFade]}
+        autoplay={{ delay: 3000 }}
+      >
+        {listings.map(({data, id}) => (
+          <SwiperSlide key={id} onClick={() => navigate(`/category/${data.type}/${id}`)}>
+              <div 
+                style={{
+                  background: `url(${data.imgUrls[0]}) center, no-repeat`, 
+                  backgroundSize:"cover" 
+                }}
+                className='w-full h-[300px] overflow-hidden'
+              ></div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </>
     )
   )
